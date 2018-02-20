@@ -41,7 +41,7 @@ end
 %Complete Problem 1 U vector
 U1 = [BC01 U1 BCL];
 
-%Display to check accuracy
+%Display to if N and 2N are approximately =
 Z1 = U1.';
 X1=zeros(N,1);
 for j = 2:(N+2)

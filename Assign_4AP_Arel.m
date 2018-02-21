@@ -19,6 +19,7 @@ N=89;
 h = L/(N+1); %Step size
 D = -(2+k*k*h*h); %Coefficient
 
+%Problem 1
 %Create 4 vectors of length N, for diagonals and RHS of system
 MD1 = D.*ones(1,N); %Main Diagonal
 LD1 = ones(1,N); %Lower Diagonal
@@ -51,7 +52,7 @@ Y1=[X1 Z1]; %Checks accuracy at N and at 2N
 %solution at the previous solutions spatial location
 %Analytical solution
 x1=0:h:L;
-Ua=( (1 - ( ( sinh(k*(L-x1)) + sinh(k*x1) ) / sinh(k*L) )) * (A/k^2) ) + BC01*(sinh(k*(L-x1))/sinh(k*L));
+Ua=( (( ( sinh(k*(L-x1)) + sinh(k*x1)) / sinh(k*L) )-1) * (A/k^2) ) + BC01*(sinh(k*(L-x1))/sinh(k*L));
 
 %Plot of approximation and exact solutions
 x=0:h:L;
@@ -84,13 +85,14 @@ for j = N-1:-1:1
  U2(j) = ( RHS2(j) - UD2(j)*U2(j+1) ) / MD2(j);
 end
 %Complete Problem 1 U vector
-U2 = [BC02 U2 BCL];
+U2 = [(h^2*RHS2(2)+2*h*BC02-2*U2(2))/2 U2 BCL];
+      
 
 %Loop used to evaluate the difference of the current and previous
 %solution at the previous solutions spatial location
 %Analytical solution
 x2=0:h:L;
-Ub=( (1 - (  cosh(k*(L-x2)) / cosh(k*L) )) * (A/k^2) ) + BC02/k*(sinh(k*(L-x2))/cosh(k*L));
+Ub=( ((  cosh(k*x2) / cosh(k*L) )-1) * (A/(k^2)) ) - BC02/k*(sinh(k*(L-x2))/cosh(k*L));
 
 %Plot of approximation and exact solutions
 x=0:h:L;

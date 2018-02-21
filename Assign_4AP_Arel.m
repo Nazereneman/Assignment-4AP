@@ -64,12 +64,34 @@ title({'1-D Helmholtz Equation';'Dirichlet BC (Problem 1)'})
 xlabel('X')
 ylabel('U')
 
+%Assignment 4AP
+%Micah Arel
+%2/19/2018
+%Assignment 4AP
+%Solve 1D Helmholtz Equation using Tri-Diagonal Method
+%2nd Derivative approximation based on Center Difference Formula
+%Total of N nodes between 0 and L; x=0 N=0, x=L N+1
+clear
+clc
+L = 1; %Right endpoint
+V0=1;
+v=1;
+A=1; %Given
+k = 10; %Coefficient of u(x) in ODE
+BC01 = V0; %Boundary condition node 0 (left side)for problem 1
+BC02 = v; %Boundary condition node 0 (left side) for problem 2
+BCL = 0; %Boundary condition node N+1 (right side) for both problems
+N=89;
+h = L/(N+1); %Step size
+D = -(2+k*k*h*h); %Coefficient
+
 %Problem 2
 
 %Create 4 vectors of length N, for diagonals and RHS of system
 MD2 = D.*ones(1,N); %Main Diagonal
 LD2 = ones(1,N); %Lower Diagonal
 UD2 = ones(1,N); %Upper Diagonal
+UD2(1) = 2; %Upper diagonal at 1 is 2
 RHS2 = (h^2)*ones(N,1); %RHS vector (given f(x))
 RHS2(1) = RHS2(1) + 2*h*BC02; %Input boundary conditions to RHS
 RHS2(N) = RHS2(N) - BCL;
@@ -85,7 +107,7 @@ for j = N-1:-1:1
  U2(j) = ( RHS2(j) - UD2(j)*U2(j+1) ) / MD2(j);
 end
 %Complete Problem 1 U vector
-U2 = [(h^2*RHS2(2)+2*h*BC02-2*U2(2))/2 U2 BCL];
+U2 = [(RHS2(1)-2*U2(2))/(-(2+h^2*k^2)) U2 BCL];
       
 
 %Loop used to evaluate the difference of the current and previous
